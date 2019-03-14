@@ -172,6 +172,14 @@ class Graph(object):
         node = self.find_node(start_node_num)
         self._clear_visited()
         ret_list = [node.value]
+        queue = [node]
+        node.visited = True
+        for item in queue:
+            for edge in item.edges:
+                if not edge.node_to.visited:
+                    ret_list.append(edge.node_to.value)
+                    queue.append(edge.node_to)
+                    edge.node_to.visited = True
         # Your code here
         return ret_list
 
