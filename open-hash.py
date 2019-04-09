@@ -3,9 +3,10 @@
 '''Hashed table class using lists and open addressing'''
 
 class HashTable():
-    def __init__(self):
+    def __init__(self, size=3, n=0):
         '''initate a hash table with an empty list'''
-        self.size = 7
+        self.items = n
+        self.size = size
         self.table = [None] * self.size
 
     def hashKey(self, key):
@@ -16,9 +17,14 @@ class HashTable():
 
     def addValue(self, key, value):
         '''add key, value pair to table'''
+        self.items += 1
+        loadfactor = float(self.items)/float(self.size)
+        if loadfactor >= 0.5:
+            self.table, self.size = self.doubleTable()
         keyPair = self.findKeyPair(key)
         index = self.hashKey(keyPair)
         self.table[index] = (key, value)
+
 
     def exists(self, key):
         '''lookup if a certain key exists'''
@@ -53,16 +59,31 @@ class HashTable():
                 pos = self.getKey(keyPair)
         return keyPair
 
+    def doubleTable(self):
+        '''doubles the table it reachs 0.5 load factor'''
+        new_table = HashTable(self.size*2)
+        for element in self.table:
+            if element:
+                new_table.addValue(element[0], element[1])
+        return new_table.table, new_table.size
+
+    def get(self, key):
+        keyPair = self.findKeyPair(key)
+        index = self.hashKey(keyPair)
+        return self.table[index][1]
+
 
 def main():
     t = HashTable()
     t.addValue('Moaz',100)
     t.addValue('Jubran',200)
+    print(t.size)
     print(t.exists('Moaz'))
     print(t.exists('Mai'))
-    print(t.getKey('Jubran'))
+    print(t.exists('Jubran'))
     t.remove('Moaz')
     print(t.exists('Moaz'))
+    print(t.get('Jubran'))
 
 if __name__ == '__main__':
     main()
