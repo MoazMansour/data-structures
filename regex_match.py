@@ -4,6 +4,7 @@
     The function determines if the text and pattern are the equal,
     where the '.' is treated as a single a character wildcard, and '*' is matched for a zero
     or more sequence of the previous letter
+    Source: https://www.pramp.com/challenge/KvZ3aL35Ezc5K9Eq9Llp
 '''
 
 def star(char, arr):
