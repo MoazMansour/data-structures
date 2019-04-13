@@ -1,46 +1,67 @@
-def sudoku_solve(board):
-    for r in range(9):
-        for c in range(9):
-            if not board[r][c]:
-                value = getP(board, r, c)
-                if value:
-                    for v in value:
-                        board[r][c] = v
-                        if sudoku_solve(board):
-                            return True
-                    board[r][c] = 0
-                    return False
-                return False
+#!/usr/bin/env python3
+
+'''
+    The function determines if a given sudoko solvable or not
+    The sudoko is checked by checking every single possibility in each empty node
+    then passing on to the next empty element and so forth
+    Source: https://www.pramp.com/challenge/O5PGrqGEyKtq9wpgw6XP
+'''
+
+def sudoku_solve(board, r=0):
+    ''' Iterate over each row to find the empty slots
+        then plug in every single possibility and send it over to see
+        if it's solvable
+        Takes:
+            - the sudoko board
+            - the current positional row (Default 0 for first iteration)
+        Returns:
+            - true if solvable
+            - false otherwise
+    '''
+    if 0 in board[r]:
+        c = board[r].index(0)
+        value = getP(board, r, c)
+        if value:
+            for v in value:
+                board[r][c] = v
+                if sudoku_solve(board, r):
+                    return True
+            board[r][c] = 0
+            return False
+        return False
+    elif r < len(board)-1:
+            return sudoku_solve(board, r+1)
     print(board)
     return True
 
 
 def getP(board, row, col):
+    ''' Helper function to get all possibile values for a certain slot
+        it does that by comparing all possible values to the existing ones
+        in the same row and col
+        Takes:
+            - the sudoko board
+            - the position of the subject element in row and col
+        Returns:
+            - a set of all possible values
+    '''
+    all_pos = set(range(1,10))
     row_pos = set()
     col_list = set()
     for r in range(9):
         col_list.add(board[r][col])
-    for chr in range(1,10):
-        if not (chr in board[row] or chr in col_list):
-            row_pos.add(chr)
+    row_pos = all_pos - set(board[row]) - col_list
     return row_pos
 
-# def intersection(arr, carr):
-#   inter = []
-#   for item in arr:
-#     if item in carr:
-#       inter.append(item)
-#   return inter
-
 def replace_int(matrix):
-  for r in range(9):
-    for c in range(9):
-      if not matrix[r][c] == ".":
-        matrix[r][c] = int(matrix[r][c])
-      else:
-        matrix[r][c] = 0
-  return matrix
-
+    ''' Just for better efficiency. replace all strings to integers in the input'''
+    for r in range(9):
+        for c in range(9):
+          if not matrix[r][c] == ".":
+            matrix[r][c] = int(matrix[r][c])
+          else:
+            matrix[r][c] = 0
+    return matrix
 
 
 board = [

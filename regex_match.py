@@ -8,7 +8,8 @@
 '''
 
 def star(char, arr):
-    '''This function checks all following letters in a test string is equal
+        '''
+        This function checks all following letters in a test string is equal
         to a constant char that comes after a star.
         retrun cond:
             - if charachers are not equal
@@ -35,8 +36,7 @@ def star(char, arr):
 
 
 def compare(p, t):
-    '''compares to stack of characters to be equal
-    takes input
+    '''compares to stack of characters to be equal'''
     while p and t:
         char = p.pop()
         tchar = t.pop()
