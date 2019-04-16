@@ -48,9 +48,10 @@ def getP(board, row, col):
     all_pos = set(range(1,10))
     row_pos = set()
     col_list = set()
+    subboard = getSubboard(board, (row, col))
     for r in range(9):
         col_list.add(board[r][col])
-    row_pos = all_pos - set(board[row]) - col_list
+    row_pos = all_pos - set(board[row]) - col_list - subboard
     return row_pos
 
 def replace_int(matrix):
@@ -62,6 +63,41 @@ def replace_int(matrix):
           else:
             matrix[r][c] = 0
     return matrix
+
+def getSubboard(board, vertix, visited=set()):
+    '''
+        Helper function to get all the values in a given subboard for
+        possibilities calculations. It basically builds a graph structure
+        for the subboard based on the subject position and then it does a
+        BSF to get all the values in the graph
+        Takes:
+            - The board values
+            - The positin of the test subject
+            - a set of all visited nodes in the graph
+        Returns:
+            - a set of all the values in the given subboard
+    '''
+    visited.add(vertix)
+    adj = {1:[1], 2:[-1,1], 0:[-1]}
+    r, c = vertix[0], vertix[1]
+    subboard = set()
+    r_pos, c_pos = ((r+1) % 3), ((c+1) % 3)
+    r_oper, c_oper = adj[r_pos], adj[c_pos]
+    edges = []
+    for v in r_oper:
+        next_r = r + v
+        edges.append((next_r, c))
+    for v in c_oper:
+        next_c = c + v
+        edges.append((r, next_c))
+    for edge in edges:
+        i, j = edge[0], edge[1]
+        subboard.add(board[i][j])
+    for edge in edges:
+        if edge not in visited:
+            subboard.union(getSubboard(board, edge, visited))
+    return subboard
+
 
 
 board = [
