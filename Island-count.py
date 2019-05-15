@@ -21,7 +21,6 @@ def get_number_of_islands(binaryMatrix):
     col = len(binaryMatrix[0])
     r = 0
     count = 0
-    visited = []
     for r in range(rows):
         for c in range(col):
           if binaryMatrix[r][c] == 1:
@@ -41,7 +40,7 @@ def traverse_nbrs(matrix, pos):
           all 1s belongs to this island has been eliminated
           to avoid being counted again
     '''
-    
+
     r, c = pos
     matrix[r][c] = 0
     if c != 0:

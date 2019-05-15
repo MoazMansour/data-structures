@@ -79,7 +79,7 @@ def getSubboard(board, vertix, visited=set()):
     '''
     visited.add(vertix)
     adj = {1:[1], 2:[-1,1], 0:[-1]}
-    r, c = vertix[0], vertix[1]
+    r, c = vertix
     subboard = set()
     r_pos, c_pos = ((r+1) % 3), ((c+1) % 3)
     r_oper, c_oper = adj[r_pos], adj[c_pos]
